@@ -21,6 +21,7 @@
     },
     "web": {
       "output": "static",
+      "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -37,6 +38,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "cfa37fa4-3b15-4378-87a1-53dac0e613d4"
+      }
+    },
+    "owner": "hanwwwws-team"
   }
 }
