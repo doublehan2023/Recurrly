@@ -1,29 +1,33 @@
 import { Link } from "expo-router";
 import "../../../global.css";
-import { Pressable, Text } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import images from "../../../constants/images";
+import { HOME_BALANCE, HOME_USER } from "../../../constants/data";
+import { icons } from "../../../constants/icons";
+import formatCurrency from "../../../lib/utils";
+import dayjs from "dayjs";
 
 export default function App() {
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
-      <Text className="text-7xl font-sans-extrabold text-primary">
-        Home
-      </Text>
-      <Link href="/onBoarding" asChild>
-        <Pressable className="mt-4 rounded bg-primary px-4 py-3">
-          <Text className="font-sans-bold text-white">Go to Onboarding</Text>
-        </Pressable>
-      </Link>
-      <Link href="/(auth)/signIn" asChild>
-        <Pressable className="mt-4 rounded bg-primary px-4 py-3">
-          <Text className="font-sans-bold text-white">Go to Sign In</Text>
-        </Pressable>
-      </Link>
-      <Link href="/(auth)/signUp" asChild>
-        <Pressable className="mt-4 rounded bg-primary px-4 py-3">
-          <Text className="font-sans-bold text-white">Go to Sign Up</Text>
-        </Pressable>
-      </Link>
+      <View className="home-header">
+        <View className="home-user">
+          <Image source={images.avatar} className="home-avatar" />
+          <Text className="home-user-name">{HOME_USER.name}</Text>
+        </View>
+
+        <Image source={icons.add} className="home-add-icon" />
+      </View>
+      
+      <View className="home-balance-card">
+        <Text className="home-balance-label">Balance</Text>
+        
+        <View className="home-balance-row">
+          <Text className="home-balance-amount">{formatCurrency(HOME_BALANCE.amount)}</Text>
+          <Text className="home-balance-date">{dayjs(HOME_BALANCE.nextRenewalDate).format("MM/DD")}</Text>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }

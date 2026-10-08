@@ -15,3 +15,5 @@ export function formatCurrency(value: number, currency = "USD"): string {
     return `$${amount.toFixed(2)}`;
   }
 }
+
+export default formatCurrency;
