@@ -14,8 +14,11 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "constants/**/*.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
+    "image.d.ts",
+    "type.d.ts"
   ]
 }
