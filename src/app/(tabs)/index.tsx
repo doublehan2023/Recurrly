@@ -1,25 +1,32 @@
+import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
+import { useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ListHeading from "../../../components/ListHeading";
+import SubscriptionCard from "../../../components/SubscriptionCard";
 import UpcomingSubscriptionCard from "../../../components/UpcomingSubscriptionCard";
 import {
   HOME_BALANCE,
   HOME_SUBSCRIPTIONS,
-  HOME_USER,
   UPCOMING_SUBSCRIPTIONS,
 } from "../../../constants/data";
 import { icons } from "../../../constants/icons";
-import images from "../../../constants/images";
 import "../../../global.css";
+import { getNameAndInitials } from "../../../lib/user";
 import { formatCurrency } from "../../../lib/utils";
-import SubscriptionCard from "../../../components/SubscriptionCard";
-import { useState } from "react";
 
 export default function App() {
+  const { user } = useUser();
   const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
     string | null
   >(null);
+  const emailHandle = user?.primaryEmailAddress?.emailAddress?.split("@")[0];
+  const { name: displayName, initials } = getNameAndInitials(
+    [user?.fullName, user?.firstName, emailHandle],
+    "Welcome back",
+  );
+
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       <FlatList
@@ -27,8 +34,19 @@ export default function App() {
           <>
             <View className="home-header">
               <View className="home-user">
-                <Image source={images.avatar} className="home-avatar" />
-                <Text className="home-user-name">{HOME_USER.name}</Text>
+                {user?.imageUrl ? (
+                  <Image
+                    source={{ uri: user.imageUrl }}
+                    className="home-avatar"
+                  />
+                ) : (
+                  <View className="home-avatar items-center justify-center bg-accent">
+                    <Text className="font-sans-bold text-primary">
+                      {initials}
+                    </Text>
+                  </View>
+                )}
+                <Text className="home-user-name">{displayName}</Text>
               </View>
 
               <Pressable
