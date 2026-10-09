@@ -104,6 +104,8 @@ export default function SignIn() {
     } catch (error) {
       setSubmitError(getAuthErrorMessage(error));
     } finally {
+      setEmail("");
+      setPassword("");
       setCode("");
       setNeedsVerification(false);
     }

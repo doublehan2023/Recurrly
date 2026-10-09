@@ -68,6 +68,8 @@ export default function SignUp() {
   };
 
   const handleVerify = async () => {
+    if (isSubmitting) return;
+
     if (code.trim().length < 4) {
       setSubmitError("Enter the verification code we emailed you.");
       return;
