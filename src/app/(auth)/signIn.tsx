@@ -28,6 +28,8 @@ export default function SignIn() {
   const isSubmitting = fetchStatus === "fetching";
 
   const handleSignIn = async () => {
+    if (isSubmitting) return;
+
     const nextErrors = {
       email: validateEmail(email),
       password: validatePassword(password),
@@ -96,10 +98,15 @@ export default function SignIn() {
   };
 
   const startOver = async () => {
-    await signIn.reset();
-    setCode("");
-    setSubmitError("");
-    setNeedsVerification(false);
+    try {
+      await signIn.reset();
+      setSubmitError("");
+    } catch (error) {
+      setSubmitError(getAuthErrorMessage(error));
+    } finally {
+      setCode("");
+      setNeedsVerification(false);
+    }
   };
 
   if (needsVerification) {

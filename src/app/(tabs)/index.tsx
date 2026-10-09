@@ -1,8 +1,10 @@
-import dayjs from "dayjs";
 import { useUser } from "@clerk/expo";
+import dayjs from "dayjs";
+import { useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ListHeading from "../../../components/ListHeading";
+import SubscriptionCard from "../../../components/SubscriptionCard";
 import UpcomingSubscriptionCard from "../../../components/UpcomingSubscriptionCard";
 import {
   HOME_BALANCE,
@@ -11,9 +13,8 @@ import {
 } from "../../../constants/data";
 import { icons } from "../../../constants/icons";
 import "../../../global.css";
+import { getNameAndInitials } from "../../../lib/user";
 import { formatCurrency } from "../../../lib/utils";
-import SubscriptionCard from "../../../components/SubscriptionCard";
-import { useState } from "react";
 
 export default function App() {
   const { user } = useUser();
@@ -21,17 +22,10 @@ export default function App() {
     string | null
   >(null);
   const emailHandle = user?.primaryEmailAddress?.emailAddress?.split("@")[0];
-  const displayName =
-    user?.fullName?.trim() ||
-    user?.firstName?.trim() ||
-    emailHandle ||
-    "Welcome back";
-  const initials = displayName
-    .split(" ")
-    .map((part) => part.charAt(0))
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const { name: displayName, initials } = getNameAndInitials(
+    [user?.fullName, user?.firstName, emailHandle],
+    "Welcome back",
+  );
 
   return (
     <SafeAreaView className="flex-1 bg-background p-5">

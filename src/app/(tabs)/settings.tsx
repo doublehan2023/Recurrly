@@ -2,24 +2,28 @@ import { useClerk, useUser } from "@clerk/expo";
 import { useState } from "react";
 import { ActivityIndicator, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { getAuthErrorMessage } from "../../../lib/auth";
+import { getNameAndInitials } from "../../../lib/user";
 
 const Settings = () => {
   const { signOut } = useClerk();
   const { user } = useUser();
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const [signOutError, setSignOutError] = useState("");
   const email = user?.primaryEmailAddress?.emailAddress ?? "Signed in member";
-  const name = user?.fullName || user?.firstName || "Your account";
-  const initials = name
-    .split(" ")
-    .map((part) => part.charAt(0))
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const emailHandle = user?.primaryEmailAddress?.emailAddress?.split("@")[0];
+  const { name, initials } = getNameAndInitials(
+    [user?.fullName, user?.firstName, emailHandle],
+    "Your account",
+  );
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
+    setSignOutError("");
     try {
       await signOut();
+    } catch (error) {
+      setSignOutError(getAuthErrorMessage(error));
     } finally {
       setIsSigningOut(false);
     }
@@ -78,6 +82,9 @@ const Settings = () => {
             <Text className="font-sans-bold text-background">Sign out</Text>
           )}
         </Pressable>
+        {signOutError ? (
+          <Text className="auth-error mt-3">{signOutError}</Text>
+        ) : null}
       </View>
     </SafeAreaView>
   );

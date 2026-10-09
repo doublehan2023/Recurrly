@@ -16,7 +16,11 @@ export const validatePassword = (password: string) => {
 
 export const getAuthErrorMessage = (error: unknown) => {
   if (isClerkAPIResponseError(error)) {
-    return error.errors[0]?.longMessage ?? error.errors[0]?.message;
+    return (
+      error.errors[0]?.longMessage ??
+      error.errors[0]?.message ??
+      "Something went wrong. Please try again later."
+    );
   }
 
   return "Something went wrong. Please try again later.";

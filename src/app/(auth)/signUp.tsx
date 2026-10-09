@@ -33,6 +33,8 @@ export default function SignUp() {
   const isSubmitting = fetchStatus === "fetching";
 
   const handleSignUp = async () => {
+    if (isSubmitting) return;
+
     const nextErrors = {
       email: validateEmail(email),
       password: validatePassword(password),
@@ -91,8 +93,12 @@ export default function SignUp() {
 
   const resendCode = async () => {
     setSubmitError("");
-    const { error } = await signUp.verifications.sendEmailCode();
-    if (error) setSubmitError(getAuthErrorMessage(error));
+    try {
+      const { error } = await signUp.verifications.sendEmailCode();
+      if (error) setSubmitError(getAuthErrorMessage(error));
+    } catch (error) {
+      setSubmitError(getAuthErrorMessage(error));
+    }
   };
 
   if (isVerifying) {

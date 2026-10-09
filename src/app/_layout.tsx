@@ -1,9 +1,9 @@
 import { ClerkProvider, useAuth } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
 import { useFonts } from "expo-font";
-import { useEffect } from "react";
-import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 import "../../global.css";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
@@ -26,12 +26,6 @@ export default function RootLayout() {
     "sans-light": require("../../assets/fonts/PlusJakartaSans-Light.ttf"),
   });
 
-  useEffect(() => {
-    if (fontsLoaded || fontsError) {
-      void SplashScreen.hideAsync();
-    }
-  }, [fontsError, fontsLoaded]);
-
   if (!fontsLoaded && !fontsError) {
     return null;
   }
@@ -45,6 +39,12 @@ export default function RootLayout() {
 
 function AppNavigator() {
   const { isLoaded, isSignedIn } = useAuth();
+
+  useEffect(() => {
+    if (isLoaded) {
+      void SplashScreen.hideAsync();
+    }
+  }, [isLoaded]);
 
   if (!isLoaded) {
     return null;
