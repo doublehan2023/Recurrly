@@ -6,6 +6,9 @@ import {
 } from "../lib/utils";
 import clsx from "clsx";
 
+const getDisplayValue = (value?: string, fallback = "Not provided") =>
+  value?.trim() || fallback;
+
 const SubscriptionCard = ({
   name,
   price,
@@ -22,6 +25,10 @@ const SubscriptionCard = ({
   paymentMethod,
   status,
 }: SubscriptionCardProps) => {
+  const categoryValue =
+    getDisplayValue(category, "") || getDisplayValue(plan, "Uncategorized");
+  const renewalDateValue = formatSubscriptionDateTime(renewalDate);
+
   return (
     <Pressable
       onPress={onPress}
@@ -33,18 +40,20 @@ const SubscriptionCard = ({
           <Image source={icon} className="sub-icon" />
           <View className="sub-copy">
             <Text numberOfLines={1} className="sub-title">
-              {name}
+              {getDisplayValue(name, "Unnamed subscription")}
             </Text>
             <Text numberOfLines={1} ellipsizeMode="tail" className="sub-meta">
-              {category?.trim() ||
-                plan?.trim() ||
-                (renewalDate ? formatSubscriptionDateTime(renewalDate) : "")}
+              {getDisplayValue(category, "") ||
+                getDisplayValue(plan, "") ||
+                renewalDateValue}
             </Text>
           </View>
         </View>
         <View className="sub-price-box">
           <Text className="sub-price">{formatCurrency(price, currency)}</Text>
-          <Text className="sub-billing">{billing}</Text>
+          <Text className="sub-billing">
+            {getDisplayValue(billing, "Not specified")}
+          </Text>
         </View>
       </View>
 
@@ -59,7 +68,7 @@ const SubscriptionCard = ({
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {paymentMethod?.trim()}
+                  {getDisplayValue(paymentMethod, "Not set")}
                 </Text>
               </View>
             </View>
@@ -71,7 +80,7 @@ const SubscriptionCard = ({
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {category?.trim() || plan?.trim()}
+                  {categoryValue}
                 </Text>
               </View>
             </View>
@@ -83,7 +92,7 @@ const SubscriptionCard = ({
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {startDate ? formatSubscriptionDateTime(startDate) : ""}
+                  {formatSubscriptionDateTime(startDate)}
                 </Text>
               </View>
             </View>
@@ -95,7 +104,7 @@ const SubscriptionCard = ({
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {renewalDate ? formatSubscriptionDateTime(renewalDate) : ""}
+                  {renewalDateValue}
                 </Text>
               </View>
             </View>
@@ -107,7 +116,7 @@ const SubscriptionCard = ({
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {status ? formatStatusLabel(status) : ""}
+                  {formatStatusLabel(status?.trim())}
                 </Text>
               </View>
             </View>
