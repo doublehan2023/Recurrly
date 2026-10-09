@@ -35,8 +35,12 @@
         @apply ml-4 text-2xl font-sans-bold text-primary;
     }
 
+    .home-add-button {
+        @apply size-12 items-center justify-center rounded-full border border-black/10;
+    }
+
     .home-add-icon {
-        @apply size-12;
+        @apply size-6;
     }
 
     .home-balance-card {

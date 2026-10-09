@@ -45,8 +45,9 @@ declare global {
         daysLeft: number;
     }
 
-    interface UpcomingSubscriptionCardProps
-        extends Omit<UpcomingSubscription, "id"> {}
+    interface UpcomingSubscriptionCardProps {
+        data: UpcomingSubscription;
+    }
 
     interface ListHeadingProps {
         title: string;
