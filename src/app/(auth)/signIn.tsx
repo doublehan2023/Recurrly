@@ -76,6 +76,8 @@ export default function SignIn() {
   };
 
   const handleVerify = async () => {
+    if (isSubmitting) return;
+
     if (code.trim().length < 4) {
       setSubmitError("Enter the verification code we emailed you.");
       return;
@@ -152,6 +154,7 @@ export default function SignIn() {
           <Pressable
             accessibilityRole="button"
             className="auth-secondary-button"
+            disabled={isSubmitting}
             onPress={startOver}
           >
             <Text className="auth-secondary-button-text">
